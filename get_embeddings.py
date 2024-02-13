@@ -50,10 +50,8 @@ class MAE_HIC:
 
   def load_dataset(self, batch_size=32, num_workers=20):
     transform_train = transforms.Compose([
-          transforms.RandomResizedCrop(224, scale=(0.2, 1.0), interpolation=3),  # 3 is bicubic
-          transforms.RandomHorizontalFlip(),
-          transforms.ToTensor(),
-          transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])])
+          transforms.ToTensor()
+          ])
     dataset_train = datasets.ImageFolder(os.path.join(self.data_path, 'train'), transform=transform_train)
     data_loader_train = torch.utils.data.DataLoader(
       dataset_train,
@@ -78,9 +76,7 @@ def main():
   b, f1, f2 = embeddings.shape
   embeddings = embeddings.reshape(b, f1 * f2)
   print(embeddings.shape)
-  np.save('IMR90_embedding_2D.npy', embeddings)
-  clustering_path = 'kmeans.npy'
-  mae_hic.plot_umap_jpegs(clustering_path, dataloader)
+  np.save('IMR90_embedding_2D_notransform.npy', embeddings)
 
 if __name__ == "__main__":
       main()
